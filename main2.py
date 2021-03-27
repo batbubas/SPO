@@ -78,7 +78,7 @@ def particleswarm(f,bounds,p,c1,c2,vmax,tol):
 
 
                 
-f=PSU.Ackley
+f=PSU.Brown
 dimensions=10
 dimension_bounds=[-2,2]
 bounds=[0]*dimensions #creating 5 dimensional bounds
