@@ -4,7 +4,7 @@ Created on Sat Mar 27 11:43:24 2021
 
 @author: Asus
 """
-import numpy as np 
+import numpy as np
 import copy
 import numpy.random as rnd
 import time
@@ -17,7 +17,7 @@ import itertools
 #     X: arguments of the function Rosenbrock
 #     OUTPUTS
 #     f : evaluation of the Rosenbrock function given the inputs
-    
+
 #     DOMAIN         : Xi is within [-5,10] although can be [-2.048,2.048]
 #     DIMENSIONS     : any
 #     GLOBAL MINIMUM : f(x)=0 x=[1,...,1] 
@@ -30,7 +30,7 @@ import itertools
 #     X: arguments of the Styblinski-Tang Function
 #     OUTPUTS
 #     f : evaluation of the Styblinski-Tang function given the inputs
-    
+
 #     DOMAIN         : [-5,5]
 #     DIMENSIONS     : any
 #     GLOBAL MINIMUM : f(x)=(-39.166*d) x=[-2.9035,...,-2.9035] 
@@ -49,8 +49,9 @@ def f2(x):
 #     GLOBAL MINIMUM : f(x)=
 #     '''
 
-    f=sum((x[i]-i)**2 for i in range(len(x)))
+    f = sum((x[i] - i) ** 2 for i in range(len(x)))
     return f
+
 
 def Griewank(x):
     '''
@@ -63,12 +64,13 @@ def Griewank(x):
     DIMENSION       : 20,30
     GLOBAL MINIMUM   : f(x)=0 x=
     '''
-    d=len(x)
-    a=1/4000
-    b=1
-    sum1=sum(x[i]**2 for i in range(d))
-    sum2=itertools.product(np.cos(x[i]/np.sqrt(i)) for i in range(d))
-    return a*sum1-sum2+b
+    d = len(x)
+    a = 1 / 4000
+    b = 1
+    sum1 = sum(x[i] ** 2 for i in range(d))
+    sum2 = itertools.product(np.cos(x[i] / np.sqrt(i)) for i in range(d))
+    return a * sum1 - sum2 + b
+
 
 def Ackley(x):
     '''
@@ -81,15 +83,16 @@ def Ackley(x):
     DIMENSION       : 20,30
     GLOBAL MINIMUM   : f(x)=0 x=[0...0]
     '''
-    d=len(x)
-    a=20
-    b=0.2
-    c=np.pi*2
-    sum1=sum(x[i]**2 for i in range(d))
-    sum1=(-a)*np.exp(((-b)*np.sqrt(sum1/d)))
-    sum2=sum(np.cos(c*x[i]) for i in range(d))
-    sum2=np.exp((sum2/d))
-    return sum1-sum2+a+np.exp(1)
+    d = len(x)
+    a = 20
+    b = 0.2
+    c = np.pi * 2
+    sum1 = sum(x[i] ** 2 for i in range(d))
+    sum1 = (-a) * np.exp(((-b) * np.sqrt(sum1 / d)))
+    sum2 = sum(np.cos(c * x[i]) for i in range(d))
+    sum2 = np.exp((sum2 / d))
+    return sum1 - sum2 + a + np.exp(1)
+
 
 def Brown(x):
     '''
@@ -102,11 +105,12 @@ def Brown(x):
     DIMENSION       : 20,30
     GLOBAL MINIMUM   : 
     '''
-    d=len(x)
-    a=(x[i]**(2*((x[i+1])**2)+1) for i in range(d))
-    b=(x[i+1]**(2*((x[i])**2)+1) for i in range(d))
-    sum1=sum(a+b)
+    d = len(x)
+    a = (x[i] ** (2 * ((x[i + 1]) ** 2) + 1) for i in range(d))
+    b = (x[i + 1] ** (2 * ((x[i]) ** 2) + 1) for i in range(d))
+    sum1 = sum(a + b)
     return sum1
+
 
 def Schaffersf6(x):
     '''
@@ -122,12 +126,11 @@ def Schaffersf6(x):
     a = 0.5
     para = x * 10
     para = x[0:2]
-    num = (np.sin(np.sqrt((para[0] * para[0]) + (para[1] * para[1]))))* (np.sin(np.sqrt((para[0] * para[0]) + (para[1] * para[1])))) - a
-    denom = (1.0 + 0.001 * ((para[0] * para[0]) + (para[1] * para[1]))**2
-    sum1 = a+ (num/denom)
+    num = (np.sin(np.sqrt((para[0] * para[0]) + (para[1] * para[1])))) * (
+        np.sin(np.sqrt((para[0] * para[0]) + (para[1] * para[1])))) - a
+    denom = (1.0 + 0.001 * ((para[0] * para[0]) + (para[1] * para[1]))) ** 2
+    sum1 = a + (num / denom)
     return sum1
-
-
 
 # def local_best_get(particle_pos,particle_pos_val,p):
 #     local_best=[0]*p #creating empty local best list
@@ -142,15 +145,13 @@ def Schaffersf6(x):
 #     return np.array(local_best)
 
 
-
-
 # def initiation(f,bounds,p):
 #     '''
 #     INPUTS
 #     f       :function to be searched over
 #     bounds  :bounds of function in form [[x1,x2],[x3,x4],[x5,x6]...]
 #     p       :number of particles
-    
+
 #     OUTPUTS
 #     particle_pos      :array of random particle positions 
 #     particle_best     :array of best particle positions (same as current)
@@ -159,7 +160,7 @@ def Schaffersf6(x):
 #     local_best        :array of the best particle in each neighbourhood 
 #     local_best_fitness:function value evaluated at each local best
 #     particle_pos_val  :fitness of each particle 
-    
+
 #     '''
 #     d=len(bounds) #finding number of dimensions
 #     particle_pos=np.zeros(p) #creating empty position array
@@ -182,18 +183,18 @@ def Schaffersf6(x):
 #     return d,np.array(particle_pos), np.array(particle_best), \
 #                  np.array(swarm_best), np.array(particle_velocity), np.array(local_best), \
 #                      np.array(particle_pos_val)
-        
+
 # def withinbounds(bounds,particle_pos):
 #     '''
 #     DESCRIPTION: 
 #         Checks whether a particle's position is within the bounds of the problem 
 #         and contraints particles within bounds
-        
+
 #     INPUTS
 #     bounds      :bounds of problem in form [[x1,x2],[x3,x4]...]
 #     particle_pos:coordinates of a particle e.g [p1,p2,p3...]
-    
- 
+
+
 #     '''
 #     for i in range(len(bounds)):
 #         if particle_pos[i]<bounds[i][0]: #if particle is less than lower bound

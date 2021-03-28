@@ -13,13 +13,15 @@ from random import uniform
 # --- MAIN ---------------------------------------------------------------------+
 
 def sphere(x):
-    total=0
+    total = 0
     for i in range(len(x)):
-        total+=x[i]**2
+        total += x[i] ** 2
     return total
-    
+
+
 if __name__ == "pso.sphere":
     sphere()
+
 
 class Particle:
     def __init__(self, x0):
@@ -109,4 +111,3 @@ def minimize(costFunc, x0, bounds, num_particles, maxiter, verbose=False):
         print(f'   > {err_best_g}\n')
 
     return err_best_g, pos_best_g
-
