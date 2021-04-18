@@ -74,7 +74,7 @@ def particleswarm(f, bounds, p, c1, c2, vmax, tol):
     return print('Optimum at: ', swarm_best, '\n', 'Function at optimum: ', f(swarm_best))
 
 
-f = PSU.Brown
+f = PSU.Ackley
 dimensions = 10
 dimension_bounds = [-2, 2]
 bounds = [0] * dimensions  # creating 5 dimensional bounds
