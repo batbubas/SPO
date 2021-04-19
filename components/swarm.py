@@ -18,6 +18,7 @@ class Swarm:
     # learning rate
     lr: float = 0.3
     holdup_epoch = 0
+    epoch = 0
 
     def init_swarm_best(self):
         x = self.function
