@@ -4,10 +4,12 @@
 #
 # @author: Asus
 # """
+from datetime import datetime
 
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+from pylab import cm
 
 from components.function import rosenbrock
 from components.particle import Particle
@@ -15,8 +17,10 @@ from components.swarm import Swarm
 
 fig, ax = plt.subplots()
 iteration = ax.text(0.05, 0.95, '', horizontalalignment='left', verticalalignment='top', transform=ax.transAxes)
-swarm = Swarm(particles=[Particle() for i in range(100)], function=rosenbrock)
 
+swarm = Swarm(particles=[Particle() for i in range(50)], function=rosenbrock)
+swarm.b_low = -3
+swarm.b_high = 3
 swarm.init_the_swarm(rosenbrock)
 
 list_of_positions = np.array([particle.position for particle in swarm.particles])
@@ -31,26 +35,54 @@ best = ax.scatter(swarm.best_position[0], swarm.best_position[1])
 
 
 def init():
+    X = np.arange(swarm.b_low, swarm.b_high, 0.15)
+    Y = np.arange(swarm.b_low, swarm.b_high, 0.15)
+    X, Y = np.meshgrid(X, Y)
+
+    b = 100
+    f = lambda x, y: (x - 1) ** 2 + b * (y - x ** 2) ** 2
+    Z = f(X, Y)
+
+    ax.contour(X, Y, Z, 200)
+
     particles.set_offsets(list_of_positions)
+    best.set_offsets(swarm.best_position)
     plt.title("PSO")
     plt.xlabel("x")
     plt.ylabel("y")
     iteration.set_text('')
-    return particles, iteration  # return the variables that will updated in each frame
+    return particles, best, iteration  # return the variables that will updated in each frame
 
 
 def animate(i):  # 'i' is the number of frames
     # update the data
     swarm.iterate_the_swarm()
     particles.set_offsets(np.array([particle.position for particle in swarm.particles]))
+    best.set_offsets(swarm.best_position)
     iteration.set_text(' frame number = %.1d' % i)
-    return particles, iteration
+    return particles, best, iteration
+
+def gen():
+    ...
+    #generate stop condtion
+    # R takiego ze norma roznicy xm (pozycji teraz czastki) i globalnej min -{ r musi byc najwieksza rowne z kazdej czastek }
+    # R podzielone przez diameeer (S) swarmu - R dla poczatkowych czastek
+    # global reward
+    # i = 0
+    # while reward <= 10:
+    #     i += 1
+    #     yield i
 
 
-ani = animation.FuncAnimation(fig, animate, 2000, init_func=init, interval=100, blit=True)
+ani = animation.FuncAnimation(fig, animate, 10000, init_func=init, interval=100, blit=True)
 plt.show()
-ani.save('mymovie.gif')  # save command
+print("___BEST STARTING___ : ", swarm.best_position)
+print("___STARTING VALUE ___ : ", rosenbrock(swarm.best_position))
 
+now = datetime.now()
+ani.save(f'PSO_{now.date()}_{now.time().strftime("%H_%M")}.gif')  # save command
+print("___BEST OVERALL___ : ", swarm.best_position)
+print("___WITH VALUE ___ : ", rosenbrock(swarm.best_position))
 # # --- IMPORT DEPENDENCIES ------------------------------------------------------+
 #
 # from random import random

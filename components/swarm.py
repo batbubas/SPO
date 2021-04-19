@@ -7,8 +7,8 @@ from typing import List, Optional, Callable
 @dataclass
 class Swarm:
     function: Optional[Callable]
-    b_low = -10
-    b_high = 10
+    b_low = -3
+    b_high = 3
     particles: List[Particle]
     best_position: Optional[np.array] = None
     # parameters
@@ -37,7 +37,7 @@ class Swarm:
     def iterate_the_swarm(self):
         for particle in self.particles:
             particle.update_velocity(omega=self.omega,phi_p=self.phi_p,phi_g=self.phi_g,swarm_best=self.best_position)
-            particle.update_position(self.lr)
+            particle.update_position(self.lr, self.b_low, self.b_high)
             particle.update_best_position(self.function)
 
             if (updated_best := particle.should_update_global(self.function, self.best_position) )is not None:
