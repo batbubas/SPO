@@ -17,10 +17,20 @@ class Particle:
 
     def update_position(self, lr, bl, bh):
         self.position = self.position * lr + self.velocity
-        if self.position[1] >= bh or self.position[1] <= bh:
-            self.velocity[1] = 0 * self.velocity[1]
-        if self.position[0] >= bh or self.position[0] <= bl:
-            self.velocity[0] = 0 * self.velocity[0]
+
+        if self.position[1] >= bh:
+            self.position[1] = bh
+            self.velocity[1] = -0.1 * self.velocity[1]
+        elif self.position[1] <= bl:
+            self.position[1] = bl
+            self.velocity[1] = -0.1 * self.velocity[1]
+
+        if self.position[0] >= bh:
+            self.velocity[0] = -0.1 * self.velocity[0]
+            self.position[1] = bh
+        elif self.position[0] <= bl:
+            self.position[0] = bl
+            self.velocity[0] = -0.1 * self.velocity[0]
 
     def update_velocity(self, omega, phi_p, phi_g, swarm_best):
         # I CANT DECIDE IF THIS SHOULD BE PICKED RANDOM FOR ALL DIM AT ONCE OR SEPARATELY

@@ -16,12 +16,14 @@ class Swarm:
     phi_p: float = 1.33
     phi_g: float = 1.45
     # learning rate
-    lr: float = 1.
+    lr: float = 0.3
+    holdup_epoch = 0
 
     def init_swarm_best(self):
         x = self.function
         # print(self.function(self.particles[0].best_position))
-        initial_best_with_positions = ([(self.function(particle.best_position), particle.best_position) for particle in self.particles])
+        initial_best_with_positions = (
+        [(self.function(particle.best_position), particle.best_position) for particle in self.particles])
         best_candidate = min(initial_best_with_positions)
         self.best_position = best_candidate[1]
 
@@ -35,25 +37,31 @@ class Swarm:
             particle.init_velocity(self.b_low, self.b_high)
 
     def iterate_the_swarm(self):
+        best_before_change = self.best_position
         for particle in self.particles:
-            particle.update_velocity(omega=self.omega,phi_p=self.phi_p,phi_g=self.phi_g,swarm_best=self.best_position)
+            particle.update_velocity(omega=self.omega, phi_p=self.phi_p, phi_g=self.phi_g,
+                                     swarm_best=self.best_position)
             particle.update_position(self.lr, self.b_low, self.b_high)
             particle.update_best_position(self.function)
 
-            if (updated_best := particle.should_update_global(self.function, self.best_position) )is not None:
+            if (updated_best := particle.should_update_global(self.function, self.best_position)) is not None:
                 self.best_position = updated_best
 
+        if (best_before_change == self.best_position).all():
+            self.holdup_epoch += 1
+        else:
+            self.holdup_epoch = 0
 
 # if __name__ == "__main__":
-    # swarm = Swarm(particles=[Particle() for i in range(10)], function=rosenbrock)
-    # # print(swarm)
-    # swarm.init_the_swarm(rosenbrock)
-    # # print(swarm)
-    # list_of_positions = np.array([particle.position for particle in swarm.particles])
-    #
-    #
-    #
-    # print(list_of_positions)
-    # for i in range(1):
-    #     swarm.iterate_the_swarm()
-    #     print(swarm.best_position)
+# swarm = Swarm(particles=[Particle() for i in range(10)], function=rosenbrock)
+# # print(swarm)
+# swarm.init_the_swarm(rosenbrock)
+# # print(swarm)
+# list_of_positions = np.array([particle.position for particle in swarm.particles])
+#
+#
+#
+# print(list_of_positions)
+# for i in range(1):
+#     swarm.iterate_the_swarm()
+#     print(swarm.best_position)

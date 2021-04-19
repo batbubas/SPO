@@ -11,3 +11,8 @@ def rosenbrock(X):
     """
     f = sum(100.0 * (X[i + 1] - X[i] ** 2) ** 2 + (1 - X[i]) ** 2 for i in range(0, len(X) - 1))
     return f
+
+
+def two_parameter_rosenbrock(x,y, b=100):
+    f = lambda x, y: (x - 1) ** 2 + b * (y - x ** 2) ** 2
+    return f(x,y)

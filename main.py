@@ -4,14 +4,16 @@
 #
 # @author: Asus
 # """
+import sys
 from datetime import datetime
+from typing import Callable
 
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from pylab import cm
 
-from components.function import rosenbrock
+from components.function import rosenbrock, two_parameter_rosenbrock
 from components.particle import Particle
 from components.swarm import Swarm
 
@@ -35,15 +37,8 @@ best = ax.scatter(swarm.best_position[0], swarm.best_position[1])
 
 
 def init():
-    X = np.arange(swarm.b_low, swarm.b_high, 0.15)
-    Y = np.arange(swarm.b_low, swarm.b_high, 0.15)
-    X, Y = np.meshgrid(X, Y)
 
-    b = 100
-    f = lambda x, y: (x - 1) ** 2 + b * (y - x ** 2) ** 2
-    Z = f(X, Y)
-
-    ax.contour(X, Y, Z, 200)
+    plot_function(ax, two_parameter_rosenbrock, swarm.b_low, swarm.b_high)
 
     particles.set_offsets(list_of_positions)
     best.set_offsets(swarm.best_position)
@@ -54,6 +49,15 @@ def init():
     return particles, best, iteration  # return the variables that will updated in each frame
 
 
+def plot_function(plot_axes: plt.Axes, fn: Callable, min_val, max_val):
+    X = np.arange(min_val,  max_val, 0.15)
+    Y = np.arange(min_val, max_val, 0.15)
+    X, Y = np.meshgrid(X, Y)
+    b = 100
+    Z = fn(X, Y)
+    plot_axes.contour(X, Y, Z, 200)
+
+
 def animate(i):  # 'i' is the number of frames
     # update the data
     swarm.iterate_the_swarm()
@@ -62,19 +66,24 @@ def animate(i):  # 'i' is the number of frames
     iteration.set_text(' frame number = %.1d' % i)
     return particles, best, iteration
 
-def gen():
-    ...
+
+def gen_function() -> object:
+    global swarm
+    i = 0
+    while swarm.holdup_epoch <= 300:
+        i += 1
+        print("HOLDUP NUMBER", swarm.holdup_epoch, "epoch", i)
+        yield i
+
+    # stop condition no upgrade after some time i guess
     #generate stop condtion
     # R takiego ze norma roznicy xm (pozycji teraz czastki) i globalnej min -{ r musi byc najwieksza rowne z kazdej czastek }
     # R podzielone przez diameeer (S) swarmu - R dla poczatkowych czastek
-    # global reward
-    # i = 0
-    # while reward <= 10:
-    #     i += 1
-    #     yield i
 
 
-ani = animation.FuncAnimation(fig, animate, 10000, init_func=init, interval=100, blit=True)
+
+ani = animation.FuncAnimation(fig, animate, frames=gen_function,
+                              init_func=init, interval=100, blit=True, save_count=sys.maxsize)
 plt.show()
 print("___BEST STARTING___ : ", swarm.best_position)
 print("___STARTING VALUE ___ : ", rosenbrock(swarm.best_position))
@@ -83,6 +92,13 @@ now = datetime.now()
 ani.save(f'PSO_{now.date()}_{now.time().strftime("%H_%M")}.gif')  # save command
 print("___BEST OVERALL___ : ", swarm.best_position)
 print("___WITH VALUE ___ : ", rosenbrock(swarm.best_position))
+
+fig2, ax2 = plt.subplots()
+plot_function(ax2, two_parameter_rosenbrock, swarm.b_low, swarm.b_high)
+particles_final = ax2.scatter(list_of_positions[:, 0], list_of_positions[:, 1])
+best_final = ax2.scatter(swarm.best_position[0], swarm.best_position[1])
+
+plt.show()
 # # --- IMPORT DEPENDENCIES ------------------------------------------------------+
 #
 # from random import random
