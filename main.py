@@ -47,7 +47,7 @@ if __name__ == "__main__":
     # mozna tez zamienic w linijce 29 tego pliku zamiast while <= holdup limit na jakas liczbe ustawiona iteracji
     # animacja dziala tylko z rosenbrock chyba ze dorobi się funkcje takie jak two_parameter_rosenbrock dla reszty
     # inaczej ciezko narysowac sama funkcje w animated solution
-    #dołożyłem basic GA dziala ok ?
+    #dołożyłem basic GA dziala ok
 
     #TODO: WLASNIE SOBIE USWIADOMILME ZE WYMIAR PRZESTRZENI TO ILOSC X np x1 , x2 do n omg XD
     # to blyby szybki fix ale trzeba by zmienic zdefiniowane funkcje XD no nic
