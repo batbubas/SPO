@@ -57,7 +57,7 @@ if __name__ == "__main__":
 
     def init():
 
-        plot_function(ax, func, swarm.b_low, swarm.b_high)
+        plot_function(ax, two_parameter_rosenbrock, swarm.b_low, swarm.b_high)
 
         particles.set_offsets(list_of_positions)
         best.set_offsets(swarm.best_position)
