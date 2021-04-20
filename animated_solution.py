@@ -32,8 +32,10 @@ if __name__ == "__main__":
     swarm.omega = float(config["Params"]["omega"])
     swarm.phi_g = float(config["Params"]["phi_g"])
 
+    print(swarm.phi_g, swarm.phi_p, swarm.omega)
+
     fig, ax, iteration = create_figure()
-    particles, best, list_of_positions = create_particle_best_plot(ax, swarm)
+    particles, best, list_of_positions = create_particle_best_plot(ax,swarm)
 
     def animate(i):  # 'i' is the number of frames
         # update the data
@@ -55,7 +57,7 @@ if __name__ == "__main__":
 
     def init():
 
-        plot_function(ax, two_parameter_rosenbrock, swarm.b_low, swarm.b_high)
+        plot_function(ax, func, swarm.b_low, swarm.b_high)
 
         particles.set_offsets(list_of_positions)
         best.set_offsets(swarm.best_position)

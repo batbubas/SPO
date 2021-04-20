@@ -4,16 +4,8 @@
 #
 # @author: Asus
 # """
-import sys
-from datetime import datetime
-from typing import Callable
 
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
-from pylab import cm
-
-from components.function import rosenbrock, two_parameter_rosenbrock
+from components.function import rosenbrock, Ackley, ackley, schaffer, brown, griewank
 from components.particle import Particle
 from components.swarm import Swarm
 from tqdm import tqdm
@@ -33,7 +25,6 @@ def main(num_particles, func, border_low, border_high,
     swarm.init_the_swarm(func)
     print("STARTING BEST", swarm.best_position, "WITH VALUE", rosenbrock(swarm.best_position))
 
-    pbar = tqdm(total=holdup_limit)
     with tqdm(total=holdup_limit) as pbar:
         while swarm.holdup_epoch <= holdup_limit:
             swarm.epoch += 1
@@ -48,16 +39,21 @@ def main(num_particles, func, border_low, border_high,
 
 
 if __name__ == "__main__":
+    #tutaj trzeba by zrobic nowe params dla kazdej funkcji bo zmieniaja sie borders etc
+    # wywolac to dla tych funkcji i mamy wyniki
+    # ale wczesniej trzeba by wybrac jedna funkcje np rosenbrocka polceam
+    # i dla rosenbrocka pozmieniac omega phi_p phi_g etc
+    # holdup limit to warunek zatrzymania jak przez np 100 iteracji nie zmieni sie best to zatrzymujemy program
+    # mozna tez zamienic w linicje
     params = {
         "num_particles": 20,
-        "func": rosenbrock,
-        "border_low": -3,
-        "border_high": 3,
+        "func": ackley,
+        "border_low": -32,
+        "border_high": 32,
         "learning_rate": 0.3,
-        "omega": 1.27,
-        "phi_p": 1.33,
+        "omega": 1.67,
+        "phi_p": 1.43,
         "phi_g": 1.45,
         "holdup_limit": 10000
     }
     main(**params)
-
