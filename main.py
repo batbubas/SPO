@@ -44,7 +44,13 @@ if __name__ == "__main__":
     # ale wczesniej trzeba by wybrac jedna funkcje np rosenbrocka polceam
     # i dla rosenbrocka pozmieniac omega phi_p phi_g etc
     # holdup limit to warunek zatrzymania jak przez np 100 iteracji nie zmieni sie best to zatrzymujemy program
-    # mozna tez zamienic w linicje
+    # mozna tez zamienic w linijce 29 tego pliku zamiast while <= holdup limit na jakas liczbe ustawiona iteracji
+    # animacja dziala tylko z rosenbrock chyba ze dorobi się funkcje takie jak two_parameter_rosenbrock dla reszty
+    # inaczej ciezko narysowac sama funkcje w animated solution
+    # w momencie pisania nie ma jeszcze GA ale jak wstane dorobie moze ?
+
+    #TODO: WLASNIE SOBIE USWIADOMILME ZE WYMIAR PRZESTRZENI TO ILOSC X np x1 , x2 do n omg XD
+    # to blyby szybki fix ale trzeba by zmienic zdefiniowane funkcje XD no nic
     params = {
         "num_particles": 20,
         "func": ackley,
